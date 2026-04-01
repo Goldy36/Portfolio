@@ -103,6 +103,10 @@ ul {
   margin-inline: auto;
 }
 
+main section[id] {
+  scroll-margin-top: 104px;
+}
+
 .bg-shape {
   position: fixed;
   border-radius: 50%;
@@ -169,13 +173,15 @@ ul {
 .nav-links a {
   color: var(--text-muted);
   font-weight: 500;
-  padding: 6px 0;
+  padding: 6px 8px;
+  border-radius: 8px;
   position: relative;
-  transition: color 0.25s ease;
+  transition: color 0.25s ease, background 0.25s ease;
 }
 
 .nav-links a:hover {
   color: var(--text);
+  background: color-mix(in oklab, var(--surface-strong) 75%, transparent);
 }
 
 .nav-links a::after {
@@ -198,6 +204,7 @@ ul {
 
 .nav-links a.active {
   color: var(--text);
+  background: color-mix(in oklab, var(--primary) 18%, transparent);
 }
 
 .theme-btn {
@@ -263,11 +270,11 @@ ul {
   align-items: center;
   gap: 2.6rem;
   min-height: calc(100vh - 74px);
-  padding-block: 72px 42px;
+  padding-block: 88px 56px;
 }
 
 .section {
-  padding-block: 72px;
+  padding-block: 84px;
 }
 
 .section-tag {
@@ -358,6 +365,10 @@ h3 {
   gap: 12px;
 }
 
+.hero-actions .btn {
+  min-width: 156px;
+}
+
 .hero-metrics {
   margin-top: 18px;
   display: flex;
@@ -444,6 +455,7 @@ h3 {
 .btn-primary {
   background: var(--gradient-cta);
   color: #ffffff;
+  border-color: color-mix(in oklab, var(--primary) 72%, transparent);
 }
 
 .btn-primary:hover {
@@ -627,6 +639,9 @@ h3 {
   padding: 22px;
   background: linear-gradient(145deg, var(--surface), color-mix(in oklab, var(--bg-soft) 65%, transparent));
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .project-card:hover {
@@ -668,6 +683,20 @@ h3 {
   color: var(--text-muted);
 }
 
+.project-impact {
+  margin-top: 12px;
+  color: color-mix(in oklab, var(--text) 88%, var(--primary));
+  font-weight: 600;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.project-impact i {
+  color: var(--accent);
+  margin-top: 5px;
+}
+
 .chip-wrap {
   margin-top: 16px;
   display: flex;
@@ -694,7 +723,8 @@ h3 {
 }
 
 .project-actions {
-  margin-top: 18px;
+  margin-top: auto;
+  padding-top: 18px;
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
@@ -776,6 +806,7 @@ h3 {
   gap: 10px;
   color: var(--text-muted);
   transition: transform 0.25s ease, color 0.25s ease;
+  flex-wrap: wrap;
 }
 
 .contact-card p:hover {
@@ -785,7 +816,9 @@ h3 {
 
 .contact-item a {
   flex: 1;
+  min-width: 200px;
   transition: color 0.25s ease, text-shadow 0.25s ease;
+  word-break: break-word;
 }
 
 .contact-item a:hover,
@@ -936,11 +969,16 @@ h3 {
   .hero {
     grid-template-columns: 1fr;
     min-height: auto;
-    padding-top: 48px;
+    padding-top: 56px;
+    gap: 1.8rem;
   }
 
   .hero-stats {
     grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding-block: 64px;
   }
 }
 
@@ -961,6 +999,7 @@ h3 {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
+    padding-inline: 4%;
   }
 
   .nav-links.show {
@@ -972,8 +1011,33 @@ h3 {
     margin-left: auto;
   }
 
+  .hero {
+    padding-top: 48px;
+    padding-bottom: 40px;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  .hero-metrics {
+    gap: 6px;
+  }
+
+  .hero-metrics span {
+    font-size: 0.76rem;
+  }
+
   .project-head {
     flex-direction: column;
+  }
+
+  .project-card,
+  .contact-card,
+  .contact-form,
+  .experience-card,
+  .skill-card {
+    padding: 18px;
   }
 
   .back-to-top {

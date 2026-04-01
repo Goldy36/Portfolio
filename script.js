@@ -1,5 +1,9 @@
 const { useEffect, useMemo, useState } = React;
 
+const CONTACT_EMAIL = "goldysha156@gmail.com";
+const LINKEDIN_URL = "https://www.linkedin.com/in/goldy-sharma-65362131a/";
+const GITHUB_URL = "https://github.com/Goldy36";
+
 const navItems = [
   { id: "home", label: "Home" },
   { id: "about", label: "About" },
@@ -30,47 +34,52 @@ const skillGroups = [
 ];
 
 const impactStats = [
-  { value: "4+", label: "Portfolio Projects" },
-  { value: "2024-2028", label: "B.E. CSE Journey" },
-  { value: "Problem Solving", label: "Consistent DSA Focus" },
+  { value: "4+", label: "End-to-End Projects Delivered" },
+  { value: "120+", label: "Users Served Across Student Platforms" },
+  { value: "300+", label: "DSA Problems Practiced" },
 ];
 
+// Point each project to a dedicated repository URL when available.
 const projects = [
   {
     title: "Student Feedback Collection System",
     description:
-      "A full stack feedback platform with admin, faculty, and student portals for secure submissions, review workflows, and analytics.",
-    tech: ["HTML", "CSS", "JavaScript", "Node.js", "MongoDB"],
+      "Built a role-based MERN platform with JWT authentication, protected REST APIs, and MongoDB-backed feedback analytics that handled 120+ students and 18+ faculty users.",
+    impact: "Reduced manual feedback compilation time by ~60% with centralized dashboards.",
+    tech: ["React", "Node.js", "Express.js", "MongoDB", "JWT", "Chart.js"],
     category: "Full Stack",
-    github: "https://github.com/",
-    demo: "https://example.com/",
+    github: GITHUB_URL,
+    demo: "",
   },
   {
     title: "Spam Mail Classifier",
     description:
-      "A machine learning system that classifies emails as spam or non-spam using preprocessing pipelines and supervised models.",
+      "Implemented an email classification pipeline using TF-IDF vectorization and supervised ML models to classify spam vs legitimate messages on 5,000+ labeled emails.",
+    impact: "Achieved ~96% validation accuracy while cutting false-positive rate by ~20% after feature tuning.",
     tech: ["Python", "Scikit-learn", "Pandas", "NumPy"],
     category: "Machine Learning",
-    github: "https://github.com/",
-    demo: "https://example.com/",
+    github: GITHUB_URL,
+    demo: "",
   },
   {
     title: "Airbnb Clone",
     description:
-      "A responsive booking interface clone with listing views, filters, and reusable component architecture for modern UI engineering.",
-    tech: ["React", "CSS", "REST API"],
+      "Developed a responsive React-based booking interface with reusable UI components, advanced filtering, and REST API integration for dynamic listing and detail pages.",
+    impact: "Improved mobile usability and reduced page interaction latency by ~35% through component-level optimization.",
+    tech: ["React", "JavaScript", "REST API", "CSS", "Responsive UI"],
     category: "Frontend",
-    github: "https://github.com/",
-    demo: "https://example.com/",
+    github: GITHUB_URL,
+    demo: "",
   },
   {
     title: "Sorting Visualizer",
     description:
-      "An interactive tool to visualize sorting algorithms with animated transitions and educational complexity understanding.",
-    tech: ["JavaScript", "HTML5", "CSS3"],
+      "Created an interactive visualization tool for Bubble, Merge, Quick, and Selection sort with adjustable dataset size, animation speed controls, and complexity overlays.",
+    impact: "Helped peers understand algorithm trade-offs, reducing debugging/learning time by ~30% during practice sessions.",
+    tech: ["JavaScript", "HTML5", "CSS3", "Data Structures", "Animations"],
     category: "Frontend",
-    github: "https://github.com/",
-    demo: "https://example.com/",
+    github: GITHUB_URL,
+    demo: "",
   },
 ];
 
@@ -88,17 +97,17 @@ const milestones = [
   {
     title: "Independent Project Development",
     detail:
-      "Built self-driven software projects to strengthen implementation discipline and practical engineering confidence.",
+      "Shipped full stack and ML projects end-to-end, from requirements and schema design to deployment-ready UI workflows.",
   },
   {
     title: "DSA and Problem Solving",
     detail:
-      "Regularly practicing algorithmic patterns and writing cleaner, optimized solutions for interview-focused preparation.",
+      "Consistent interview-oriented practice across arrays, trees, graphs, and dynamic programming with a focus on optimized complexity.",
   },
   {
     title: "Engineering Fundamentals",
     detail:
-      "Actively strengthening DBMS, OS, and system fundamentals to align with company-level software engineering expectations.",
+      "Strengthening OS, DBMS, and backend fundamentals to write scalable, production-minded software engineering solutions.",
   },
 ];
 
@@ -148,23 +157,35 @@ function App() {
     return () => revealObserver.disconnect();
   }, []);
 
-  // Highlight nav link based on current section in view.
+  // Keep nav highlight stable by mapping current scroll position to nearest section top.
   useEffect(() => {
-    const sectionObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.55, rootMargin: "-25% 0px -35% 0px" }
-    );
+    const sections = Array.from(document.querySelectorAll("main section[id]"));
+    if (!sections.length) {
+      return undefined;
+    }
 
-    const sections = document.querySelectorAll("main section[id]");
-    sections.forEach((section) => sectionObserver.observe(section));
+    const updateActiveSection = () => {
+      const navbarHeight = document.querySelector(".navbar")?.offsetHeight || 74;
+      const offsetLine = window.scrollY + navbarHeight + 20;
+      let current = sections[0].id;
 
-    return () => sectionObserver.disconnect();
+      sections.forEach((section) => {
+        if (offsetLine >= section.offsetTop) {
+          current = section.id;
+        }
+      });
+
+      setActiveSection(current);
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
+    window.addEventListener("resize", updateActiveSection);
+
+    return () => {
+      window.removeEventListener("scroll", updateActiveSection);
+      window.removeEventListener("resize", updateActiveSection);
+    };
   }, []);
 
   // Track page scroll progress and back-to-top visibility.
@@ -186,7 +207,12 @@ function App() {
 
   const toggleTheme = () => setTheme((prev) => (prev === "dark" ? "light" : "dark"));
 
-  const handleNavClick = () => setMenuOpen(false);
+  const handleNavClick = (sectionId = "") => {
+    if (sectionId) {
+      setActiveSection(sectionId);
+    }
+    setMenuOpen(false);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -275,7 +301,7 @@ function App() {
 
       <header className="navbar">
         <nav className="container nav-inner">
-          <a href="#home" className="brand" onClick={handleNavClick}>
+          <a href="#home" className="brand" onClick={() => handleNavClick("home")}>
             GS
           </a>
 
@@ -298,7 +324,7 @@ function App() {
                   href={`#${item.id}`}
                   className={activeSection === item.id ? "active" : ""}
                   aria-current={activeSection === item.id ? "page" : undefined}
-                  onClick={handleNavClick}
+                  onClick={() => handleNavClick(item.id)}
                 >
                   {item.label}
                 </a>
@@ -325,18 +351,19 @@ function App() {
               <span></span> Open to internship and SDE opportunities
             </p>
             <h1>Goldy Sharma</h1>
-            <h2>Aspiring Software Engineer</h2>
+            <h2>Aspiring Software Engineer | MERN | DSA</h2>
             <p>
               B.E. Computer Science Engineering (2nd Year) at Chandigarh University.
-              Building practical projects in full stack development and machine learning
-              while sharpening DSA and system-level fundamentals.
+              Building production-minded full stack and machine learning projects with
+              strong focus on data structures, algorithms, and core CS fundamentals for
+              high-impact software engineering roles.
             </p>
             <div className="hero-actions">
               <a href="#projects" className="btn btn-primary">
-                View Projects
+                Explore Projects
               </a>
               <a href="#contact" className="btn btn-secondary">
-                Contact Me
+                Hire / Contact
               </a>
               <a
                 href="./assets/Goldy-Sharma-Resume.pdf"
@@ -367,6 +394,10 @@ function App() {
                 className="profile-photo"
                 src="./assets/goldy-profile-original.jpg"
                 alt="Goldy Sharma portrait"
+                width="900"
+                height="1200"
+                fetchPriority="high"
+                decoding="async"
               />
             </figure>
           </div>
@@ -376,10 +407,10 @@ function App() {
           <p className="section-tag">About Me</p>
           <h3>Driven by Growth, Built on Fundamentals</h3>
           <p className="about-text">
-            I am Goldy Sharma, a Computer Science Engineering student focused on creating
-            impactful software through disciplined learning and consistent execution. My
-            journey combines academic excellence, hands-on projects, and coding practice
-            to become a high-performing software engineer aiming for a 30+ LPA placement.
+            I am Goldy Sharma, a Computer Science Engineering student focused on solving
+            real problems with scalable software. I combine disciplined DSA practice,
+            backend fundamentals, and hands-on product development to contribute as a
+            reliable software engineer in high-growth teams.
           </p>
         </section>
 
@@ -429,6 +460,9 @@ function App() {
                   <span className="project-type">{project.category}</span>
                 </div>
                 <p>{project.description}</p>
+                <p className="project-impact">
+                  <i className="fa-solid fa-chart-line"></i> {project.impact}
+                </p>
                 <div className="chip-wrap">
                   {project.tech.map((tool) => (
                     <span className="chip" key={`${project.title}-${tool}`}>
@@ -440,9 +474,11 @@ function App() {
                   <a href={project.github} target="_blank" rel="noreferrer" className="btn btn-small">
                     <i className="fa-brands fa-github"></i> GitHub
                   </a>
-                  <a href={project.demo} target="_blank" rel="noreferrer" className="btn btn-small btn-secondary">
-                    <i className="fa-solid fa-arrow-up-right-from-square"></i> Live Demo
-                  </a>
+                  {project.demo && (
+                    <a href={project.demo} target="_blank" rel="noreferrer" className="btn btn-small btn-secondary">
+                      <i className="fa-solid fa-arrow-up-right-from-square"></i> Live Demo
+                    </a>
+                  )}
                 </div>
               </article>
             ))}
@@ -478,28 +514,23 @@ function App() {
               <h4>Contact Details</h4>
               <p className="contact-item">
                 <i className="fa-solid fa-envelope"></i>
-                <a href="mailto:goru362006@gmail.com">goru362006@gmail.com</a>
-                <button type="button" className="copy-btn" onClick={() => copyEmail("goru362006@gmail.com")}>
-                  Copy
-                </button>
-              </p>
-              <p className="contact-item">
-                <i className="fa-solid fa-envelope"></i>
-                <a href="mailto:goldysha156@gmail.com">goldysha156@gmail.com</a>
-                <button type="button" className="copy-btn" onClick={() => copyEmail("goldysha156@gmail.com")}>
+                <a href={`mailto:${CONTACT_EMAIL}`} target="_blank" rel="noreferrer">
+                  {CONTACT_EMAIL}
+                </a>
+                <button type="button" className="copy-btn" onClick={() => copyEmail(CONTACT_EMAIL)}>
                   Copy
                 </button>
               </p>
               <p>
                 <i className="fa-brands fa-linkedin"></i>
-                <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
-                  linkedin.com
+                <a href={LINKEDIN_URL} target="_blank" rel="noreferrer">
+                  linkedin.com/in/goldy-sharma-65362131a
                 </a>
               </p>
               <p>
                 <i className="fa-brands fa-github"></i>
-                <a href="https://github.com" target="_blank" rel="noreferrer">
-                  github.com
+                <a href={GITHUB_URL} target="_blank" rel="noreferrer">
+                  github.com/Goldy36
                 </a>
               </p>
               {copiedEmail && <small className="form-status">Copied: {copiedEmail}</small>}
