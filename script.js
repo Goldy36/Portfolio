@@ -349,6 +349,8 @@ function App() {
             </div>
             <div className="hero-metrics">
               <span>Government Scholarship Recipient</span>
+              <span>Flipkart GRID 7.0 Round 2</span>
+              <span>Building Full Stack + ML Projects</span>
             </div>
 
             <div className="hero-stats">
@@ -363,6 +365,12 @@ function App() {
 
           <div className="hero-photo reveal">
             <figure className="profile-frame">
+              <figcaption className="profile-tag profile-tag-one">
+                <i className="fa-solid fa-graduation-cap"></i> 2nd Year CSE
+              </figcaption>
+              <figcaption className="profile-tag profile-tag-two">
+                <i className="fa-solid fa-briefcase"></i> Open to Internships
+              </figcaption>
               <img
                 className="profile-photo"
                 src="./assets/goldy-profile-original.jpg"
